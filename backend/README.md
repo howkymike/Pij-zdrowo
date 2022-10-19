@@ -65,3 +65,13 @@ Aby stworzyć MVP produktu trzeba dużego nakładu czasu.
 ## PostgreSQL:
 1. stosunkowa niska szybkość odczytu danych
 2. Nie może zostać uruchomiony na obojętnie jakim typie hosta
+
+# Wybór technologii
+
+Python, Flask, Mongodb, pewnie jakis AWS.
+
+#### Czemu flask?
+1. jeden z 3 wyborów
+2. stabilny
+3. lekki, Django może być 
+4. fajny itp
