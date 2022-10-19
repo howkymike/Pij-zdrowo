@@ -73,5 +73,5 @@ Python, Flask, Mongodb, pewnie jakis AWS.
 #### Czemu flask?
 1. jeden z 3 wyborów
 2. stabilny
-3. lekki, Django może być 
+3. lekki, Django może być wymagający sprzętowo 
 4. fajny itp
