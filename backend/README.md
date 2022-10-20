@@ -75,3 +75,4 @@ Python, Flask, Mongodb, pewnie jakis AWS.
 2. stabilny
 3. lekki, Django może być wymagający sprzętowo 
 4. fajny itp
+5. ...
