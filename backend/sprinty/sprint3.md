@@ -15,3 +15,9 @@ Baza danych - uwierzytelnienie
 Baza danych - przykładowe dane
 
 ![alt test](https://github.com/howkymike/Pij-zdrowo/blob/backend/backend/sprinty/images/data.png?raw=true)
+
+Przykładowe wywołanie danych
+
+Baza danych - przykładowe dane
+
+![alt test](https://github.com/howkymike/Pij-zdrowo/blob/backend/backend/sprinty/images/getdata.png?raw=true)

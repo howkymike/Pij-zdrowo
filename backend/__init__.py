@@ -13,6 +13,7 @@ app.config['SECRET_KEY'] = SECRET_KEY_FLASK
 # mongodb
 client = MongoClient("localhost", 27017)
 db = client["authorization"]
+db_data = client["data"]
 
 @app.before_request
 def before_request():

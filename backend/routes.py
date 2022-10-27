@@ -1,6 +1,6 @@
 from flask import Flask, request, session
 from __init__ import app
-from database.models import User
+from database.models import User, Data
 from __init__ import token_needed
 
 @app.route("/dashboard")
@@ -21,3 +21,8 @@ def login():
 def logout():
     return User().logout()
 
+@app.route("/mydata/source/<id>")
+@token_needed
+def get_data(id):
+    source = request.args.get("id")
+    return Data().getData(id)

@@ -2,7 +2,7 @@ import uuid
 from flask import Flask, jsonify, request, session, redirect
 from email_validator import validate_email, EmailNotValidError
 
-from __init__ import db
+from __init__ import db, db_data
 from config import PASSWORD_HASH_SALT
 from utils.sha256 import hash_password_with_salt
 
@@ -55,3 +55,11 @@ class User:
             self.start_session(user)
             return jsonify({"success": "You've been authorized"})
         return jsonify({ "error" : "Invalid login credentials"}), 200
+
+
+class Data:
+    def getData(self, source):
+        data = db_data.measurement.find_one({"source": "123"})
+        del data["_id"]
+        print(data)
+        return jsonify(data), 200
