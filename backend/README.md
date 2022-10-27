@@ -25,3 +25,9 @@ mongosh
 ```
 
 - `mongosh` zostało zmienione z `mongo` w jednej z ostatnich wersji.
+
+Po uruchomieniu bazy danych, uruchom serwer:
+
+```
+python3 __init__.py
+```
