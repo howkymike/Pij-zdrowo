@@ -13,7 +13,7 @@ class User:
         session['user'] = user
         del user['password']
 
-        return jsonify(user), 200
+        return jsonify({"info":"Successful registration"}), 200
 
     def signup(self):
         print(request.form)

@@ -20,3 +20,4 @@ def login():
 @token_needed
 def logout():
     return User().logout()
+
