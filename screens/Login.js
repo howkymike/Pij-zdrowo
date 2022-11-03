@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -7,7 +6,12 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  StatusBar,
 } from "react-native";
+
+import { useState } from "react";
+
+import { loginUser } from "../util/auth";
 
 export default function Login({ navigation }) {
   function pressHandler() {
@@ -28,6 +32,28 @@ export default function Login({ navigation }) {
     Drop,
     buttonPress,
   } = styles;
+
+  const [isLogging, setIsLogging] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function loginHandler() {
+    setIsLogging(true);
+    const res = await loginUser(email, password);
+    setIsLogging(false);
+  }
+
+  function updateInputValueHandler(inputType, enteredValue) {
+    switch (inputType) {
+      case "email":
+        setEmail(enteredValue);
+        break;
+      case "password":
+        setPassword(enteredValue);
+        break;
+    }
+  }
+
   return (
     <View style={container}>
       <Image
@@ -42,15 +68,17 @@ export default function Login({ navigation }) {
         Sign in to your account
       </Text>
       <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "email")}
         style={[Input, InputLogin, StandardText]}
-        placeholder="Username"
+        placeholder="Email"
       />
       <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "password")}
         style={[Input, InputPassword, StandardText]}
         placeholder="Password"
         secureTextEntry={true}
       />
-      <TouchableOpacity style={LoginButton}>
+      <TouchableOpacity onPress={loginHandler} style={LoginButton}>
         <Text style={ButtonText}>{"Login"}</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
