@@ -8,7 +8,7 @@ from __init__ import token_needed
 def dashboard():
     return "You are in dashboard", 200
 
-@app.route("/signup", methods=['POST'])
+@app.route("/register", methods=['POST'])
 def singup():
     return User().signup()
 
@@ -21,8 +21,22 @@ def login():
 def logout():
     return User().logout()
 
-@app.route("/mydata/source/<id>")
+@app.route("/data/id/<index>")
 @token_needed
-def get_data(id):
-    source = request.args.get("id")
-    return Data().getData(id)
+def get_data_one(index):
+    return Data().get_data_by_ID(index)
+
+@app.route("/data/id")
+@token_needed
+def get_data_all():
+    return Data().get_all_data()
+
+@app.route("/data/source/<source>")
+@token_needed
+def get_source_one(source):
+    return Data().get_source_by_ID(source)
+
+@app.route("/data/source")
+@token_needed
+def get_source_all():
+    return Data().get_all_data()

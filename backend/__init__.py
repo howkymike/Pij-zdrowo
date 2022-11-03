@@ -1,11 +1,13 @@
-from flask import Flask, session, redirect, request, g
+from flask import Flask, session, redirect, request, g, jsonify
 import flask_login
 from pymongo import MongoClient
 #from flask_cors import CORS
-import jwt
+#import jwt
 from functools import wraps
 import datetime
-from config import MONDODB_URL, MONGODB_PORT, SECRET_KEY_FLASK
+
+from config import MONDODB_URL, MONGODB_PORT, SECRET_KEY_FLASK, FULFILL_EXAMPLE_DATA
+import example_data_fulfill
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY_FLASK
@@ -38,7 +40,7 @@ def token_needed(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            return redirect('/login')
+            return redirect('/login', 401)
     return decorator
 
 from routes import *

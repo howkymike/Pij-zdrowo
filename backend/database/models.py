@@ -5,6 +5,7 @@ from email_validator import validate_email, EmailNotValidError
 from __init__ import db, db_data
 from config import PASSWORD_HASH_SALT
 from utils.sha256 import hash_password_with_salt
+from utils.uuid import validate_uuidv4
 
 class User:
 
@@ -16,7 +17,6 @@ class User:
         return jsonify({"info":"Successful registration"}), 200
 
     def signup(self):
-        print(request.form)
 
         try:
             verify_email = validate_email(request.form.get("email"))
@@ -58,8 +58,38 @@ class User:
 
 
 class Data:
-    def getData(self, source):
-        data = db_data.measurement.find_one({"source": "123"})
-        del data["_id"]
+    def get_data_by_ID(self, index):
+        index = str(index)
+        print(index)
+        if not validate_uuidv4(index):
+            return jsonify({"error": "Invalid UUIDv4 structure in data searching"}), 400
+        data = db_data.measurement.find_one({"_id": index})
+        #del data["_id"]
         print(data)
+        return jsonify(data), 200
+
+    def get_all_data(self):
+        data = []
+
+        sorting = request.args.get("sort")
+        order = request.args.get("order")
+
+        if sorting and sorting in ["TDS", "PH", "date"]:
+            if order and order == "ASC":
+                for one in db_data.measurement.find().sort(sorting):
+                    data.append(one)
+            else:
+                for one in db_data.measurement.find().sort(sorting, -1):
+                    data.append(one)
+        else:
+            for one in db_data.measurement.find():
+                data.append(one)
+        
+        return jsonify(data), 200
+
+    def get_source_by_ID(self, index):
+        index = str(index)
+        if not validate_uuidv4(index):
+            return jsonify({"error":"Invalid UUIDv4 structure in source searching"}), 400
+        data = db_data.measurement.find_one({"source": index})
         return jsonify(data), 200
