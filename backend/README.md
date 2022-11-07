@@ -31,3 +31,9 @@ Po uruchomieniu bazy danych, uruchom serwer:
 ```
 python3 __init__.py
 ```
+
+3. WebSockets
+
+Websockety chodzą na porcie 7000, działają jedynie gdy serwer jest poprawnie uruchomiony.
+Na tę chwilę, websockety akceptują podany format: {"TDS": int, "PH": int, "source": int/string}. Inne formaty nie są akceptowane przez serwer, wyjątek jest przejmowany i serwer nadal działa.
+Podane danę są wpisywane od razu do bazy i dostępne przez klienta.
