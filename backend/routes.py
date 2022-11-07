@@ -1,7 +1,9 @@
 from flask import Flask, request, session
-from __init__ import app
-from database.models import User, Data
-from __init__ import token_needed
+
+from main import app
+from database.data import Data
+from auth import User
+from main import token_needed
 
 @app.route("/dashboard")
 @token_needed
@@ -40,3 +42,8 @@ def get_source_one(source):
 @token_needed
 def get_source_all():
     return Data().get_all_data()
+
+@app.route("/lastData")
+@token_needed
+def get_last_data():
+    return Data().get_data_last()

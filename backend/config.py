@@ -5,3 +5,5 @@ SECRET_KEY_FLASK = 'vez4b6te45tzebyzex5byze5yse5e4y'
 PASSWORD_HASH_SALT = "h24yyszyzot4Eqtj=zr+hDXXuES4KN"
 
 FULFILL_EXAMPLE_DATA = True
+
+SESSION_TIME = 3600 # in seconds
