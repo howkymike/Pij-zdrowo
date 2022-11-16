@@ -8,6 +8,8 @@ import {
   Pressable,
 } from "react-native";
 
+import dropLogo from '../assets/drop.png';
+
 import { useState } from "react";
 
 import { createUser } from "../util/auth";
@@ -58,7 +60,7 @@ export default function Register() {
         <Image
           resizeMode={"cover"}
           style={Drop}
-          source={require("C:\\Users\\Bartosz\\Documents\\Studia\\IoT\\Pij-zdrowo\\assets\\drop.png")}
+          source={dropLogo}
           width={71}
           height={98}
         />

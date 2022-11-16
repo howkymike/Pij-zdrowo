@@ -9,6 +9,8 @@ import {
   StatusBar,
 } from "react-native";
 
+import dropLogo from '../assets/drop.png';
+
 import { useState } from "react";
 
 import { loginUser } from "../util/auth";
@@ -40,6 +42,8 @@ export default function Login({ navigation }) {
   async function loginHandler() {
     setIsLogging(true);
     const res = await loginUser(email, password);
+    if(res)
+      navigation.navigate("Home")
     setIsLogging(false);
   }
 
@@ -59,7 +63,7 @@ export default function Login({ navigation }) {
       <Image
         resizeMode={"cover"}
         style={Drop}
-        source={require("C:\\Users\\Bartosz\\Documents\\Studia\\IoT\\Pij-zdrowo\\assets\\drop.png")}
+        source={dropLogo}
         width={71}
         height={98}
       />
