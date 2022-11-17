@@ -3,7 +3,7 @@ import time
 from flask import Flask, jsonify, request, session, redirect
 from email_validator import validate_email, EmailNotValidError
 
-from main import db, db_data, db_session
+from main import db, db_data, db_session, access_policy_object
 from config import PASSWORD_HASH_SALT, SESSION_TIME
 from utils.sha256 import hash_password_with_salt
 from utils.uuid import validate_uuidv4
@@ -35,25 +35,39 @@ class User:
             return False
 
     def signup(self):
-
         try:
             verify_email = validate_email(request.form.get("email"))
             email = verify_email["email"]
         except EmailNotValidError:
             return jsonify({"error":"Invalid email address"}), 400
 
+        if request.form.get("role") and request.form.get("role") in ["customer", "analyst"]:
+            role = request.form.get("role")
+        else:
+            return jsonify({"error": "You need to specify role [customer, analyst]"}), 400
+
+        if request.form.get("source"):
+            #if not validate_uuidv4(request.form.get("source")):
+            #    return jsonify({"error": "Invalid source ID - expected UUIDv4"}), 400
+            source = request.form.get("source")
+        else:
+            return jsonify({"error": "You need to specify source"}), 400
+
         new_user = {
             "_id": uuid.uuid4().hex,
             "name": request.form.get("name"),
             "email": email,
-            "password": request.form.get("password")
+            "password": request.form.get("password"),
+            "role": role,
+            "source": source
         }
-
 
         new_user["password"] = hash_password_with_salt(new_user["password"])
 
         if db.users.find_one( {"email": new_user['email'] }):
             return jsonify({"Error": "Provided email already in use"}), 400 # user enumeration vulnerability
+
+        access_policy_object.create_access_register(email, role, source)
 
         if db.users.insert_one(new_user):
             return jsonify({"success": "Successful registration"}), 200

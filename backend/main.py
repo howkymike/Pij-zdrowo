@@ -9,14 +9,18 @@ import datetime
 
 from config import MONDODB_URL, MONGODB_PORT, SECRET_KEY_FLASK, FULFILL_EXAMPLE_DATA
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY_FLASK
 
 # mongodb
-client = MongoClient("localhost", 27017)
+client = MongoClient("127.0.0.1", 27017)
 db = client["authorization"]
 db_session = client["session"]
 db_data = client["data"]
+db_access_policy = client["access_policy"]
+
+
 
 @app.before_request
 def before_request():
@@ -54,6 +58,9 @@ def token_needed(f):
     return decorator
 
 from routes import *
+from access_policy import AccessPolicy
+# access policy class
+access_policy_object = AccessPolicy()
 from auth import User
 session_handler = User()
 

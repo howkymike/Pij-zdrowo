@@ -17,7 +17,7 @@ def fulfill_data_db():
     random_uuid_db_source = [str(uuid.uuid4()).replace("-", "") for x in range(NUMBER_OF_DATA_FULFILL_DB)]
 
 
-    if db.users.find_one({"name": "test0"}) != None:
+    if db.users.find_one({"name": "test0"}) == None:
         for one in range(NUMBER_OF_USER_FULFILL_DB):
             new_user = {
                 "_id": random_uuid_users[one],
@@ -48,5 +48,5 @@ def generate_random_date():
     return dates
 
 
-print(fulfill_data_db())
+fulfill_data_db()
 #print(generate_random_date())
