@@ -6,15 +6,56 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import dropLogo from "../assets/drop.png";
+import {
+  getCurrentPositionAsync,
+  useForegroundPermissions,
+  PermissionStatus,
+} from "expo-location";
 
-import dropLogo from '../assets/drop.png';
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { createUser } from "../util/auth";
 
 export default function Register() {
+  const [locationPermissionInformation, requestPermission] =
+    useForegroundPermissions();
+
+  async function verifyPermissions() {
+    if (
+      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+    ) {
+      const permissionResponse = await requestPermission();
+
+      return permissionResponse.granted;
+    }
+
+    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+      Alert.alert(
+        "Insufficient Permissions!",
+        "You need to grant location permissions to use this app."
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  async function getLocationHandler() {
+    const hasPermission = await verifyPermissions();
+
+    if (!hasPermission) {
+      return;
+    }
+
+    const location = await getCurrentPositionAsync();
+    console.log(location);
+    return location;
+  }
+
   const {
     container,
     Input,
@@ -23,6 +64,8 @@ export default function Register() {
     RegisterText,
     ButtonText,
     Drop,
+    PickerStyle,
+    PickerItemStyle,
   } = styles;
 
   const [isRegistering, setIsRegistering] = useState(false);
@@ -30,10 +73,20 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [locationPermission, setLocationPermission] = useState(false);
 
   async function signupHandler() {
     setIsRegistering(true);
-    const res = await createUser(username, email, password);
+    const location = await getLocationHandler();
+    const res = await createUser(
+      username,
+      email,
+      password,
+      location,
+      role,
+      "test"
+    );
     setIsRegistering(false);
   }
 
@@ -50,6 +103,9 @@ export default function Register() {
         break;
       case "repeatPassword":
         setRepeatPassword(enteredValue);
+        break;
+      case "role":
+        setRole(enteredValue);
         break;
     }
   }
@@ -87,7 +143,27 @@ export default function Register() {
           placeholder="Confirm password"
           secureTextEntry={true}
         />
-        <TouchableOpacity style={RegisterButton} onPress={signupHandler}>
+        <Picker
+          style={PickerStyle}
+          selectedValue={role}
+          onValueChange={updateInputValueHandler.bind(this, "role")}
+        >
+          <Picker.Item
+            style={[PickerStyle, PickerItemStyle]}
+            label="customer"
+            value="customer"
+          />
+          <Picker.Item
+            style={[PickerStyle, PickerItemStyle]}
+            label="analyst"
+            value="analyst"
+          />
+        </Picker>
+        <TouchableOpacity
+          disabled={locationPermission}
+          style={RegisterButton}
+          onPress={signupHandler}
+        >
           <Text style={ButtonText}>{"Register"}</Text>
         </TouchableOpacity>
       </View>
@@ -139,5 +215,19 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 24,
+  },
+  PickerStyle: {
+    width: "90%",
+    height: 60,
+    backgroundColor: "#CEE2FF",
+    borderBottomWidth: 3,
+    borderBottomColor: "#4399E9",
+    marginBottom: 18,
+  },
+  PickerItemStyle: {
+    backgroundColor: "#CEE2FF",
+    marginBottom: 3,
+    borderBottomWidth: 3,
+    borderBottomColor: "#4399E9",
   },
 });

@@ -9,11 +9,12 @@ import {
   StatusBar,
 } from "react-native";
 
-import dropLogo from '../assets/drop.png';
+import dropLogo from "../assets/drop.png";
 
 import { useState } from "react";
 
 import { loginUser } from "../util/auth";
+import PHWater from "./PHWater";
 
 export default function Login({ navigation }) {
   function pressHandler() {
@@ -42,9 +43,12 @@ export default function Login({ navigation }) {
   async function loginHandler() {
     setIsLogging(true);
     const res = await loginUser(email, password);
-    if(res)
-      navigation.navigate("Home")
+    if (res) navigation.navigate("Home");
     setIsLogging(false);
+  }
+
+  function WaterPH() {
+    navigation.navigate("PHWater");
   }
 
   function updateInputValueHandler(inputType, enteredValue) {
@@ -94,6 +98,9 @@ export default function Login({ navigation }) {
         onPress={pressHandler}
       >
         <Text style={RegisterButtonText}>{"Register new account"}</Text>
+      </Pressable>
+      <Pressable style={RegisterButton} onPress={WaterPH}>
+        <Text style={RegisterButtonText}>{"PH Water Chart"}</Text>
       </Pressable>
     </View>
   );

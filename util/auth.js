@@ -3,12 +3,22 @@ import qs from "qs";
 
 const URL = "http://3.125.155.58";
 
-export const createUser = async (username, email, password, repeatPassword) => {
+export const createUser = async (
+  username,
+  email,
+  password,
+  location,
+  role,
+  source
+) => {
   console.log(username, email, password);
   const data = {
     name: username,
     email,
     password,
+    location,
+    role,
+    source,
   };
   const options = {
     method: "POST",
@@ -40,7 +50,7 @@ export const loginUser = async (email, password) => {
   try {
     const response = await axios(options);
     const resData = response.data;
-    if(resData && resData.token) {
+    if (resData && resData.token) {
       return true;
     }
   } catch (err) {
