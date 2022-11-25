@@ -50,11 +50,12 @@ export const loginUser = async (email, password) => {
   try {
     const response = await axios(options);
     const resData = response.data;
-    if (resData && resData.token) {
-      return true;
+    const token = resData.token;
+    if (resData && token) {
+      return token;
     }
   } catch (err) {
     console.error(err.response.data);
   }
-  return false;
+  return null;
 };

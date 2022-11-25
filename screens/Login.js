@@ -11,12 +11,18 @@ import {
 
 import dropLogo from "../assets/drop.png";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { loginUser } from "../util/auth";
 import PHWater from "./PHWater";
 
+import { AuthContext } from "../store/auth-context";
+
 export default function Login({ navigation }) {
+  const [isLogging, setIsLogging] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const authCtx = useContext(AuthContext);
   function pressHandler() {
     navigation.navigate("Register");
   }
@@ -36,14 +42,10 @@ export default function Login({ navigation }) {
     buttonPress,
   } = styles;
 
-  const [isLogging, setIsLogging] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   async function loginHandler() {
     setIsLogging(true);
-    const res = await loginUser(email, password);
-    if (res) navigation.navigate("Home");
+    const token = await loginUser(email, password);
+    if (token) authCtx.authenticate(token);
     setIsLogging(false);
   }
 
@@ -98,9 +100,6 @@ export default function Login({ navigation }) {
         onPress={pressHandler}
       >
         <Text style={RegisterButtonText}>{"Register new account"}</Text>
-      </Pressable>
-      <Pressable style={RegisterButton} onPress={WaterPH}>
-        <Text style={RegisterButtonText}>{"PH Water Chart"}</Text>
       </Pressable>
     </View>
   );
