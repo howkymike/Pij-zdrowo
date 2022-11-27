@@ -1,4 +1,4 @@
-import { Dimensions, View } from "react-native";
+import {Dimensions, ScrollView, View} from "react-native";
 import { LineChart, PieChart } from "react-native-chart-kit";
 
 export default function PHWater() {
@@ -23,7 +23,7 @@ export default function PHWater() {
   ];
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <ScrollView contentContainerStyle={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <LineChart
         data={data}
         width={screenWidth}
@@ -44,6 +44,6 @@ export default function PHWater() {
         }}
         backgroundColor={"transparent"}
       />
-    </View>
+    </ScrollView>
   );
 }

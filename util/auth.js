@@ -1,5 +1,7 @@
 import axios from "axios";
 import qs from "qs";
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
+import {useEffect} from "react";
 
 const URL = "http://3.125.155.58";
 
@@ -28,10 +30,14 @@ export const createUser = async (
   };
   try {
     const response = await axios(options);
-    console.log(response.data);
+    if(response.data && response.data.success) {
+      console.log(response.data);
+      return true;
+    }
   } catch (err) {
     console.error(err.response.data);
   }
+  return false;
 };
 
 export const loginUser = async (email, password) => {
