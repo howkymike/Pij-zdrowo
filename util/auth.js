@@ -1,14 +1,26 @@
 import axios from "axios";
 import qs from "qs";
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
+import {useEffect} from "react";
 
 const URL = "http://3.125.155.58";
 
-export const createUser = async (username, email, password, repeatPassword) => {
+export const createUser = async (
+  username,
+  email,
+  password,
+  location,
+  role,
+  source
+) => {
   console.log(username, email, password);
   const data = {
     name: username,
     email,
     password,
+    location,
+    role,
+    source,
   };
   const options = {
     method: "POST",
@@ -18,10 +30,14 @@ export const createUser = async (username, email, password, repeatPassword) => {
   };
   try {
     const response = await axios(options);
-    console.log(response.data);
+    if(response.data && response.data.success) {
+      console.log(response.data);
+      return true;
+    }
   } catch (err) {
     console.error(err.response.data);
   }
+  return false;
 };
 
 export const loginUser = async (email, password) => {
@@ -36,10 +52,16 @@ export const loginUser = async (email, password) => {
     data: qs.stringify(data),
     url: `${URL}/login`,
   };
+  console.log(qs.stringify(data));
   try {
     const response = await axios(options);
-    console.log(response.data);
+    const resData = response.data;
+    const token = resData.token;
+    if (resData && token) {
+      return token;
+    }
   } catch (err) {
     console.error(err.response.data);
   }
+  return null;
 };
