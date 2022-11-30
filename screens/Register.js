@@ -58,7 +58,7 @@ export default function Register() {
         <Image
           resizeMode={"cover"}
           style={Drop}
-          source={require("C:\\Users\\Bartosz\\Documents\\Studia\\IoT\\Pij-zdrowo\\assets\\drop.png")}
+          source={require("C:\\Users\\Hubert Rydz\\Desktop\\IoTRepo\\Pij-zdrowo\\assets\\drop.png")}
           width={71}
           height={98}
         />
