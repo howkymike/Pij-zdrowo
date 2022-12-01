@@ -87,8 +87,9 @@ class User:
         if user and user["password"] == hash_password_with_salt(request.form.get('password')):
             token = self.start_session(user)
             data = list(db_data.measurement.find())
-            data = access_policy_object.filter_access(data, token)
+            data = list(access_policy_object.filter_access(data, token))
             data_sources = [one["source"] for one in data]
-            data_sources = unique_list(data_sources)
+            if len(data_sources) > 0:
+                data_sources = unique_list(data_sources)
             return jsonify({"success": "You've been authorized", "token": token, "sources": data_sources}), 200
         return jsonify({ "error" : "Invalid login credentials"}), 404
