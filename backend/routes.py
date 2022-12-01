@@ -4,6 +4,7 @@ from main import app
 from database.data import Data
 from auth import User
 from main import token_needed
+from access_policy import AccessPolicy
 
 @app.route("/dashboard")
 @token_needed
@@ -47,3 +48,22 @@ def get_source_all():
 @token_needed
 def get_last_data():
     return Data().get_data_last()
+
+@app.route("/data/mysources")
+@token_needed
+def get_my_sources():
+    return Data().get_my_sources_list()
+
+@app.route("/adminito/add_source", methods=["POST"])
+@token_needed
+def add_source_to_user():
+    return AccessPolicy().add_source_to_one_user()
+
+@app.route("/abnormalData")
+@token_needed
+def get_abnormal_data():
+    return Data().get_data_abnormal()
+
+@app.route("/data/statistics")
+def get_statistics():
+    return Data().get_data_statistics()

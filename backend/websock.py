@@ -5,7 +5,11 @@ from json import JSONDecodeError
 import time
 import uuid
 
-from main import db_data
+from pymongo import MongoClient
+
+
+client_mongo = MongoClient("127.0.0.1", 27017)
+db_data = client_mongo["data"]
 
 PORT = 7000
 
@@ -34,7 +38,7 @@ async def echo(websocket, path):
     except websockets.exceptions.ConnectionClosed as e:
         print("A client just disconnected")
 
-start_server = websockets.serve(echo, "localhost", PORT)
+start_server = websockets.serve(echo, "0.0.0.0", PORT)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

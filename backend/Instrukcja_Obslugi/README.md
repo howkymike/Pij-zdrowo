@@ -34,6 +34,8 @@ Przy rejestracji doszły dodatkowe 2 pola (role i source), na podstawie informac
 
 ## Login
 
+Ten endpoint zwraca również source ID/IDs na login i hasła usera oraz do którego ma dostęp
+
 ```
 POST /login HTTP/1.1
 Host: 3.125.155.58:80
@@ -57,17 +59,20 @@ email=test103@testowy.com&password=super_password&name=test&role=analyst&source=
 
 Zostały wprowadzone role. Rola `customer` dostaje dostęp jedynie dostęp do `source`, które poda przy rejestracji. Rola `analyst` posiada dostęp do każdego rekordu danych o stanie wody w bazie danych.
 Pole `source` obecnie przyjmuje obojętnie jaką strukture. Przykładowe `source` które siedzą w bazie to:
+!!Nowe po zmianie!!
 
-1. 6f61d185daf34503bd0bf3be63d048fa2
-2. d7e80311278d46b08c794e644b40be83
-3. 7fd584f64c2c4040a5b4927f6753d171
-4. 47e04c924d62429491f06c3033fdc321
-5. ArduinoPrototypeSensor
-6. e3c51e35edbc435192e1eb550c1ea2d8
-7. ec18198321d54cd6a77e9645645d6c67
-8. 21978653c9474cd693655f58403c5742
-9. f866e6f6c1e8479eb13e4fec549baa84
-10. ef93b824f1d24d4f894312f2a8dd9975
+1.  6dc5c21be4264f6fa7ed5367f1454c54
+2.  1d610b7f9c8741fcb8d15125c3f89768
+3.  5a8f5239b61a4002a5bd9d6baba773ba
+4.  2167915ff76b4c728d79fd688c8a56a4
+5.  bacdc5b24e484bc49c26db97d039e1d1
+6.  c88638860956488f920d35974fcb2fda
+7.  8306f80d6b9e4efbb429b77ebd582d44
+8.  018d06a5f0434da08c6f98cdb647c367
+9.  767d31b13c4443a384167984b656466c
+10. 630b19c4a01245abac60f5855dc604a2
+11. b9232ab84c11471e88e88a87c4781cd9
+12. 91bb2dd05b714549b1e08388261343db
 
 # Endpointy do danych
 
@@ -131,3 +136,45 @@ Connection: close
 Obecnie parametr count określ maksymalną ilość wyników
 Domyślnie parametr `count` przyjmuje wartość 10.
 Ten endpoint ma nadane polityki dostępu, zostaną jedynie wyświetlone ostatnie dane do których ma dostęp.
+
+## /abnormalData
+
+```
+GET /abnormalData HTTP/1.1
+Host: 127.0.0.1:8000
+Auth: 8eae769c-4a08-446a-bcb7-c264d2ee6e41
+Connection: close
+
+```
+
+Istnieje parametr `count` za pomocą którego można określić liczbę zwracanych rekordów (jeśli mniejsza niż obecna liczba wszystkich).
+
+Endpoint zwraca rekordy, zgodnie z zachowaniem polityk dostępu dla ról `analyst` oraz `customer`, rekordy które przekraczają wartości PH oraz TDS.
+Uznaje się, że rekord przekroczył dany limit jeśli ma:
+
+1. PH < 6.5 or PH > 9.5
+2. TDS < 50 or TDS > 300
+
+# Wygenerowane dane
+
+Zostały wygenerowane nowe dane, które bardziej przypominają realistyczne dane.
+Dane poprawne, mają wartości PH oraz TDS różniące się o max 10% względem średniej z ustawionych limitów (PH -> (6.5 + 9.5) / 2 = 8 itp)
+Dane niepoprawne, czyli te które mają przekroczone limity są ustawione randomowo, ale z pewnym wyczuciem, nie będą to dane makabrycznie różne.
+Poniżej została przedstawiona tabela schematu wygenerowanych rekordów, wraz ze schematami generacji przedziałów czasowych
+
+| source_id                        | przedział czasowy |
+| -------------------------------- | ----------------- |
+| 6dc5c21be4264f6fa7ed5367f1454c54 | co miesiąc        |
+| 1d610b7f9c8741fcb8d15125c3f89768 | co 3 tygodnie     |
+| 5a8f5239b61a4002a5bd9d6baba773ba | co 2 tygodnie     |
+| 2167915ff76b4c728d79fd688c8a56a4 | co tydzień        |
+| bacdc5b24e484bc49c26db97d039e1d1 | co 5 dni          |
+| c88638860956488f920d35974fcb2fda | co 3 dni          |
+| 8306f80d6b9e4efbb429b77ebd582d44 | co 1 dzień        |
+| 018d06a5f0434da08c6f98cdb647c367 | random            |
+| 767d31b13c4443a384167984b656466c | random            |
+| 630b19c4a01245abac60f5855dc604a2 | random            |
+| b9232ab84c11471e88e88a87c4781cd9 | random            |
+| 91bb2dd05b714549b1e08388261343db | random            |
+
+! Wszystkie daty nie wykraczają poza 1 rok wstecz względem daty wygenerowania 28.11!

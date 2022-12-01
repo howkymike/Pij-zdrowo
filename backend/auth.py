@@ -7,6 +7,7 @@ from main import db, db_data, db_session, access_policy_object
 from config import PASSWORD_HASH_SALT, SESSION_TIME
 from utils.sha256 import hash_password_with_salt
 from utils.uuid import validate_uuidv4
+from utils.list_operation import unique_list
 
 class User:
 
@@ -85,5 +86,9 @@ class User:
 
         if user and user["password"] == hash_password_with_salt(request.form.get('password')):
             token = self.start_session(user)
-            return jsonify({"success": "You've been authorized", "token": token}), 200
+            data = list(db_data.measurement.find())
+            data = access_policy_object.filter_access(data, token)
+            data_sources = [one["source"] for one in data]
+            data_sources = unique_list(data_sources)
+            return jsonify({"success": "You've been authorized", "token": token, "sources": data_sources}), 200
         return jsonify({ "error" : "Invalid login credentials"}), 404
