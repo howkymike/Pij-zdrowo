@@ -51,8 +51,9 @@ export const loginUser = async (email, password) => {
     const response = await axios(options);
     const resData = response.data;
     const token = resData.token;
+    const source = resData.sources[1];
     if (resData && token) {
-      return token;
+      return { token, source };
     }
   } catch (err) {
     console.error(err.response.data);

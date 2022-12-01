@@ -7,7 +7,7 @@ import Login from "./screens/Login";
 import Register from "./screens/Register.js";
 import Home from "./screens/Home.js";
 import UserProfile from "./screens/UserProfile.js";
-import PHWater from "./screens/PHWater.js";
+import Logout from "./screens/Logout.js";
 import Statistics from "./screens/Statistics";
 import AuthContextProvider, { AuthContext } from "./store/auth-context.js";
 import URLContextProvider from "./store/url-context.js";
@@ -29,8 +29,8 @@ export default function App() {
 function AuthStack() {
   return (
     <Drawer.Navigator initialRouteName="Login" drawerPosition="right">
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen name="Register" component={Register} />
+      <Drawer.Screen name="Zaloguj się" component={Login} />
+      <Drawer.Screen name="Zarejestruj się" component={Register} />
     </Drawer.Navigator>
   );
 }
@@ -38,12 +38,10 @@ function AuthStack() {
 function AuthenticatedStack() {
   return (
     <Drawer.Navigator initialRouteName="Login" drawerPosition="right">
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen name="PHWater" component={PHWater} />
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="UserProfile" component={UserProfile} />
-      <Drawer.Screen name="Register" component={Register} />
-      <Drawer.Screen name="Statistics" component={Statistics} />
+      <Drawer.Screen name="Profil użytkownika" component={UserProfile} />
+      <Drawer.Screen name="Statystyki" component={Statistics} />
+      <Drawer.Screen name="Wyloguj" component={Logout} />
     </Drawer.Navigator>
   );
 }

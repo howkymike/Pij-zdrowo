@@ -15,7 +15,6 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
-
 import { useState } from "react";
 
 import { createUser } from "../util/auth";
@@ -23,7 +22,6 @@ import { createUser } from "../util/auth";
 export default function Register() {
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
-
   async function verifyPermissions() {
     if (
       locationPermissionInformation.status === PermissionStatus.UNDETERMINED
@@ -75,6 +73,7 @@ export default function Register() {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [role, setRole] = useState("");
   const [locationPermission, setLocationPermission] = useState(false);
+  const [source, setSource] = useState("");
 
   async function signupHandler() {
     setIsRegistering(true);
@@ -85,7 +84,7 @@ export default function Register() {
       password,
       location,
       role,
-      "test"
+      source
     );
     setIsRegistering(false);
   }
@@ -107,6 +106,9 @@ export default function Register() {
       case "role":
         setRole(enteredValue);
         break;
+      case "source":
+        setSource(enteredValue);
+        break;
     }
   }
 
@@ -120,27 +122,33 @@ export default function Register() {
           width={71}
           height={98}
         />
-        <Text style={RegisterText}>Register</Text>
+        <Text style={RegisterText}>Zarejestruj się</Text>
         <TextInput
           onChangeText={updateInputValueHandler.bind(this, "username")}
           style={[Input, StandardText]}
-          placeholder="Username"
+          placeholder="Nazwa użytkownika"
         />
         <TextInput
           onChangeText={updateInputValueHandler.bind(this, "email")}
           style={[Input, StandardText]}
-          placeholder="E-mail address"
+          placeholder="E-mail adres"
         />
         <TextInput
           onChangeText={updateInputValueHandler.bind(this, "password")}
           style={[Input, StandardText]}
-          placeholder="Password"
+          placeholder="Hasło"
           secureTextEntry={true}
         />
         <TextInput
           onChangeText={updateInputValueHandler.bind(this, "repeatPassword")}
           style={[Input, StandardText]}
-          placeholder="Confirm password"
+          placeholder="Potwierdź hasło"
+          secureTextEntry={true}
+        />
+        <TextInput
+          onChangeText={updateInputValueHandler.bind(this, "source")}
+          style={[Input, StandardText]}
+          placeholder="Źródło danych"
           secureTextEntry={true}
         />
         <Picker
@@ -150,12 +158,12 @@ export default function Register() {
         >
           <Picker.Item
             style={[PickerStyle, PickerItemStyle]}
-            label="customer"
+            label="Klient"
             value="customer"
           />
           <Picker.Item
             style={[PickerStyle, PickerItemStyle]}
-            label="analyst"
+            label="Analityk"
             value="analyst"
           />
         </Picker>

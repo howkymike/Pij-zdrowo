@@ -14,7 +14,6 @@ import dropLogo from "../assets/drop.png";
 import { useState, useContext } from "react";
 
 import { loginUser } from "../util/auth";
-import PHWater from "./PHWater";
 
 import { AuthContext } from "../store/auth-context";
 
@@ -44,13 +43,10 @@ export default function Login({ navigation }) {
 
   async function loginHandler() {
     setIsLogging(true);
-    const token = await loginUser(email, password);
+    const { token, source } = await loginUser(email, password);
     if (token) authCtx.authenticate(token);
+    if (source) authCtx.sourceHandler(source);
     setIsLogging(false);
-  }
-
-  function WaterPH() {
-    navigation.navigate("PHWater");
   }
 
   function updateInputValueHandler(inputType, enteredValue) {
@@ -75,7 +71,7 @@ export default function Login({ navigation }) {
       />
       <Text style={LoginText}>Login</Text>
       <Text style={[StandardText, { marginBottom: 39 }]}>
-        Sign in to your account
+        Zaloguj się na konto
       </Text>
       <TextInput
         onChangeText={updateInputValueHandler.bind(this, "email")}
@@ -85,7 +81,7 @@ export default function Login({ navigation }) {
       <TextInput
         onChangeText={updateInputValueHandler.bind(this, "password")}
         style={[Input, InputPassword, StandardText]}
-        placeholder="Password"
+        placeholder="Hasło"
         secureTextEntry={true}
       />
       <TouchableOpacity onPress={loginHandler} style={LoginButton}>
@@ -93,13 +89,13 @@ export default function Login({ navigation }) {
       </TouchableOpacity>
       <StatusBar style="auto" />
       <Text style={[StandardText, { fontSize: 20 }]}>
-        I forgot my password. Click here to reset.
+        Zapomniałem hasła. Kliknij tutaj, aby zresetować.
       </Text>
       <Pressable
         style={({ pressed }) => [RegisterButton, pressed ? buttonPress : null]}
         onPress={pressHandler}
       >
-        <Text style={RegisterButtonText}>{"Register new account"}</Text>
+        <Text style={RegisterButtonText}>{"Zarejestruj się"}</Text>
       </Pressable>
     </View>
   );
