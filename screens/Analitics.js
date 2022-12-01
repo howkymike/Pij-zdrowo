@@ -15,11 +15,13 @@ import { useState } from "react";
 import * as React from 'react';
 import axios from "axios";
 import { loginUser } from "../util/auth";
+import { AuthContext } from "../store/auth-context.js";
+import { UrlContext } from "../store/url-context.js";
+export default function Analitics() {
+  const urlCtx = React.useContext(UrlContext);
+  const authCtx = React.useContext(AuthContext);
+  const token = authCtx.token
 
-export default function Login({ navigation }) {
-  function pressHandler() {
-    navigation.navigate("Register");
-  }
 
   const {
     container,
@@ -29,89 +31,89 @@ export default function Login({ navigation }) {
     ViewText,
     NestedBullet,   
     NestedText,
-
+    DoubleNestedText,
+    DoubleNestedBullet
   } = styles;
 
   const [SOURCEArray,UpdateSOURCE] = React.useState("");
   const [PHArray, UpdatePH] = React.useState([]);
   const [TDSArray, UpdateTDS] = React.useState([]);
   const [DateArray, UpdateDate] = React.useState([]);
+  const [LocationArray, UpdateLocation] = React.useState([]);
+  const [UniqueDevices, SetUnique] = React.useState(0);
+  const [AveragePH, SetPH] = React.useState(0);
+  const [AverageTDS, SetTDS] = React.useState(0);
+  const [BestWater, SetBest] = React.useState("");
+  const [WorstWater, SetWorst] = React.useState("");
   React.useEffect(() => {
 
-    async function GetData_list (source, token){
-      console.log(source, token);
+    async function GetAbnormalData (token){
+      console.log(token);
       const options = {
         method: "GET",
         headers: { "Auth": token },
-        url: `http://3.125.155.58/data/id/`+source,
-      };
-      try {
-        
-        const response = await axios(options);
-        UpdatePH(PHArray =>[...PHArray,response.data["PH"]])
-        UpdateTDS(TDSArray =>[...TDSArray,response.data["TDS"]])
-        UpdateDate(DateArray =>[...DateArray,response.data["date"]])
-        UpdateSOURCE(SOURCEArray =>[...SOURCEArray,response.data["source"]])
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    const loginUser = async (email, password) => {
-      console.log(email, password);
-      const data = {
-        email,
-        password,
-      };
-      const options = {
-        method: "POST",
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-        data: qs.stringify(data),
-        url: `http://3.125.155.58/login`,
-      };
-      try {
-        const response = await axios(options);
-        console.log(response.data);
-      } catch (err) {
-
-        console.error(err.response.data);
-        
-      }
-    };
-    loginUser("testowy97@test.com","password")
-    async function GetStatistics (token){
-      console.log(source, token);
-      const options = {
-        method: "GET",
-        headers: { "Auth": token },
-        url: `http://3.125.155.58/abnormalData`,
+        url: `${urlCtx.URL}/abnormalData`,
       };
       try {
         
         const response = await axios(options);
         console.log(response.data)
+        for (let i in response.data){
+          UpdatePH(PHArray =>[...PHArray,response.data[i]["PH"]])
+          UpdateTDS(TDSArray =>[...TDSArray,response.data[i]["TDS"]])
+          UpdateDate(DateArray =>[...DateArray,response.data[i]["date"]])
+          UpdateLocation(LocationArray =>[...LocationArray,response.data[i]["location"]])
+
+        }
       } catch (err) {
         console.error(err);
       }
     };
-    //GetStatistics(token)
-    for (let src of source_list) {
-      //GetData_list(src,token);
-  }
+    async function GetStatistics (token){
+      console.log(token);
+      const options = {
+        method: "GET",
+        headers: { "Auth": token },
+        url: `${urlCtx.URL}/data/statistics`,
+      };
+      try {
+        
+        const response = await axios(options);
+        SetUnique(response.data["unique_sources_count"])
+        SetPH(response.data["average_ph"])
+        SetTDS(response.data["average_tds"])
+        SetBest(response.data["best_ph"]["location"])
+        SetWorst(response.data["worst_ph"]["location"])
+        for (let i in response.data["abnormal_data"]){
+          UpdatePH(PHArray =>[...PHArray,response.data["abnormal_data"][i]["PH"]])
+          UpdateTDS(TDSArray =>[...TDSArray,response.data["abnormal_data"][i]["TDS"]])
+          UpdateDate(DateArray =>[...DateArray,response.data["abnormal_data"][i]["date"]])
+          UpdateLocation(LocationArray =>[...LocationArray,response.data["abnormal_data"][i]["location"]])
+
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    //GetAbnormalData(token)
+    GetStatistics(token)
 
 
   }, []);
 
-  let source_list=["9cd147b5-e9d3-43f5-84f8-d1f1d4f79dbb","a3ffd373-6dd8-48d0-9c2a-43c098cfed8f"]
-  let token="eb69f26f-c116-4a9f-9f5d-03eb9564072a"
+  //let source_list=["9cd147b5-e9d3-43f5-84f8-d1f1d4f79dbb","a3ffd373-6dd8-48d0-9c2a-43c098cfed8f"]
   let myloop=[]
   for (let i = 0; i < PHArray.length; i++) {
     myloop.push(
       <View>
-      <View style={ViewText}  key='b{i}'><Text style={Bullet}>{'\u25CF'}</Text>
-      <Text style={InformationText}>{SOURCEArray[i]}</Text>
+      <View style={ViewText}  ><Text style={Bullet}>{'\u25CF'}</Text>
+      <Text style={InformationText}>{LocationArray[i]}</Text>
       </View>
-      <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
-      <Text style={NestedText}>PH{PHArray[i]} TDS{TDSArray[i]} Date{DateArray[i]}</Text>
+      <View style={ViewText} ><Text style={NestedBullet}>{'\u25EF'}</Text>
+      <Text style={NestedText} >Ph wody:{PHArray[i]}</Text>
+      </View>
+      <View style={ViewText} ><Text style={NestedBullet}>{'\u25EF'}</Text>
+      <Text style={NestedText} >Ilość związków:{TDSArray[i]}</Text>
       </View>
       </View> 
     );
@@ -121,6 +123,29 @@ export default function Login({ navigation }) {
     <SafeAreaView style={styles.container} >
         <ScrollView>
     <Text style={LoginText}>Panel Analityka</Text>
+    <View>
+      <View style={ViewText} ><Text style={Bullet}>{'\u25CF'}</Text>
+        <Text style={InformationText}>Ogólne informacje</Text>
+      </View>
+      <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
+        <Text style={NestedText}>Ilość urządzeń:{UniqueDevices}</Text>
+      </View>
+      <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
+        <Text style={NestedText}>średnia parametrów wody</Text>
+      </View>
+      <View style={ViewText}><Text style={DoubleNestedBullet}>{'\u25EF'}</Text>
+        <Text style={DoubleNestedText}>PH:{AveragePH}</Text>
+      </View>
+      <View style={ViewText}><Text style={DoubleNestedBullet}>{'\u25EF'}</Text>
+        <Text style={DoubleNestedText}>TDS:{AverageTDS}</Text>
+      </View>
+      <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
+        <Text style={NestedText}>Najlepszy stan wody odczytano w:{BestWater}</Text>
+      </View>
+      <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
+        <Text style={NestedText}>Najgorszy stan wody odczytano w:{WorstWater}</Text>
+      </View>
+    </View> 
     {myloop}
 
 
@@ -139,14 +164,26 @@ const styles = StyleSheet.create({
   NestedBullet:{
     fontSize: 20,
     color: "#4399E9",
-    marginLeft:"14%",
+    marginLeft:"16%",
     marginRight:0,
   },
   NestedText:{
     fontSize: 20,
     marginLeft:"1%",
     marginRight:0,
-    maxWidth:"80%",
+    maxWidth:"75%",
+  },
+  DoubleNestedBullet:{
+    fontSize: 20,
+    color: "#4399E9",
+    marginLeft:"27%",
+    marginRight:0,
+  },
+  DoubleNestedText:{
+    fontSize: 20,
+    marginLeft:"1%",
+    marginRight:0,
+    maxWidth:"50%",
   },
   container:{
     elevation: 20,
@@ -177,7 +214,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#4399E9",
     width:"6%",
-    marginLeft:"4%",
+    marginLeft:"7%",
     marginRight:0,
 
   },
