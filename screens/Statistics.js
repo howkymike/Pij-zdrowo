@@ -706,7 +706,7 @@ export default function Statistics() {
             style={styles.filterButton}
             onPress={filterTDSYears}
           >
-            <Text style={styles.SecondText}>{"Y"}</Text>
+            <Text style={styles.SecondText}>{"R"}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.filterButton}
@@ -721,11 +721,11 @@ export default function Statistics() {
             style={styles.filterButton}
             onPress={filterTDSHours}
           >
-            <Text style={styles.SecondText}>{"H"}</Text>
+            <Text style={styles.SecondText}>{"G"}</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.SecondText}>
-          Wykres wartości PH wody z 6 ostatnich {valueLabel}
+          Wykres średnich wartości PH wody z 6 ostatnich {valueLabel}
         </Text>
         <LineChart
           // data={{
@@ -750,7 +750,7 @@ export default function Statistics() {
         />
         <View style={styles.filterButtons}>
           <TouchableOpacity style={styles.filterButton} onPress={filterPHYears}>
-            <Text style={styles.SecondText}>{"Y"}</Text>
+            <Text style={styles.SecondText}>{"R"}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.filterButton}
@@ -762,7 +762,7 @@ export default function Statistics() {
             <Text style={styles.SecondText}>{"D"}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.filterButton} onPress={filterPHHours}>
-            <Text style={styles.SecondText}>{"H"}</Text>
+            <Text style={styles.SecondText}>{"G"}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

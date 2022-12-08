@@ -30,7 +30,7 @@ function AuthStack() {
   return (
     <Drawer.Navigator initialRouteName="Login" drawerPosition="right">
       <Drawer.Screen name="Zaloguj się" component={Login} />
-      <Drawer.Screen name="Zarejestruj się" component={Register} />
+      <Drawer.Screen name="Register" component={Register} />
     </Drawer.Navigator>
   );
 }
