@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   StatusBar,
+  ScrollView,
 } from "react-native";
 
 import dropLogo from "../assets/drop.png";
@@ -16,12 +17,14 @@ import { useState, useContext } from "react";
 import { loginUser } from "../util/auth";
 
 import { AuthContext } from "../store/auth-context";
+import FlashMessage from "react-native-flash-message";
 
 export default function Login({ navigation }) {
   const [isLogging, setIsLogging] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const authCtx = useContext(AuthContext);
+
   function pressHandler() {
     navigation.navigate("Register");
   }
@@ -61,7 +64,7 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <View style={container}>
+    <ScrollView contentContainerStyle={container}>
       <Image
         resizeMode={"cover"}
         style={Drop}
@@ -97,7 +100,8 @@ export default function Login({ navigation }) {
       >
         <Text style={RegisterButtonText}>{"Zarejestruj się"}</Text>
       </Pressable>
-    </View>
+      <FlashMessage position="bottom" />
+    </ScrollView>
   );
 }
 
@@ -106,10 +110,11 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
   container: {
-    flex: 1,
     backgroundColor: "#fff",
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    textAlign: "center",
   },
   Drop: {
     width: 71,
@@ -153,7 +158,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   RegisterButton: {
-    marginTop: 74,
+    marginTop: 54,
+    marginBottom: 40,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#4399E9",
@@ -167,5 +173,6 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "700",
     fontSize: 24,
+    margin: 10,
   },
 });

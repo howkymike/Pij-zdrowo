@@ -1,10 +1,18 @@
 import { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import { SafeAreaView, View, Text } from "react-native";
 
 import Login from "./screens/Login";
 import Register from "./screens/Register.js";
+import Information from "./screens/Information.js";
+import Analitics from "./screens/Analitics.js";
 import Home from "./screens/Home.js";
 import UserProfile from "./screens/UserProfile.js";
 import Logout from "./screens/Logout.js";
@@ -13,6 +21,27 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context.js";
 import URLContextProvider from "./store/url-context.js";
 
 const Drawer = createDrawerNavigator();
+
+function CustomDrawerContent(props) {
+  const authCtx = useContext(AuthContext);
+  return (
+    <SafeAreaView
+      style={{ flex: 1 }}
+      forceInset={{ top: "always", horizontal: "never" }}
+    >
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+      </DrawerContentScrollView>
+      <View>
+        <DrawerItem
+          label={() => <Text style={{ color: "white" }}>Logout</Text>}
+          style={{ backgroundColor: "cornflowerblue" }}
+          onPress={() => alert("Logged out!")}
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
 
 export default function App() {
   return (
@@ -26,6 +55,7 @@ export default function App() {
     </>
   );
 }
+
 function AuthStack() {
   return (
     <Drawer.Navigator initialRouteName="Login" drawerPosition="right">

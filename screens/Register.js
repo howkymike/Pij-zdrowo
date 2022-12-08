@@ -1,12 +1,11 @@
 import {
+  Alert,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  Image,
-  Pressable,
-  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import dropLogo from "../assets/drop.png";
@@ -18,6 +17,7 @@ import {
 import { useState } from "react";
 
 import { createUser } from "../util/auth";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function Register() {
   const [locationPermissionInformation, requestPermission] =
@@ -86,6 +86,15 @@ export default function Register() {
       role,
       source
     );
+    if (res) {
+      navigation.navigate("Login");
+
+      // currently, does not work with the navigation.navigate()
+      showMessage({
+        message: "Sucessfully created an account",
+        type: "success",
+      });
+    }
     setIsRegistering(false);
   }
 
@@ -113,82 +122,73 @@ export default function Register() {
   }
 
   return (
-    <>
-      <View style={container}>
-        <Image
-          resizeMode={"cover"}
-          style={Drop}
-          source={dropLogo}
-          width={71}
-          height={98}
-        />
-        <Text style={RegisterText}>Zarejestruj się</Text>
-        <TextInput
-          onChangeText={updateInputValueHandler.bind(this, "username")}
-          style={[Input, StandardText]}
-          placeholder="Nazwa użytkownika"
-        />
-        <TextInput
-          onChangeText={updateInputValueHandler.bind(this, "email")}
-          style={[Input, StandardText]}
-          placeholder="E-mail adres"
-        />
-        <TextInput
-          onChangeText={updateInputValueHandler.bind(this, "password")}
-          style={[Input, StandardText]}
-          placeholder="Hasło"
-          secureTextEntry={true}
-        />
-        <TextInput
-          onChangeText={updateInputValueHandler.bind(this, "repeatPassword")}
-          style={[Input, StandardText]}
-          placeholder="Potwierdź hasło"
-          secureTextEntry={true}
-        />
-        <TextInput
-          onChangeText={updateInputValueHandler.bind(this, "source")}
-          style={[Input, StandardText]}
-          placeholder="Źródło danych"
-          secureTextEntry={true}
-        />
-        <Picker
-          style={PickerStyle}
-          selectedValue={role}
-          onValueChange={updateInputValueHandler.bind(this, "role")}
-        >
-          <Picker.Item
-            style={[PickerStyle, PickerItemStyle]}
-            label="Klient"
-            value="customer"
-          />
-          <Picker.Item
-            style={[PickerStyle, PickerItemStyle]}
-            label="Analityk"
-            value="analyst"
-          />
-        </Picker>
-        <TouchableOpacity
-          disabled={locationPermission}
-          style={RegisterButton}
-          onPress={signupHandler}
-        >
-          <Text style={ButtonText}>{"Register"}</Text>
-        </TouchableOpacity>
-      </View>
-    </>
+    <ScrollView contentContainerStyle={container}>
+      <Image
+        resizeMode={"cover"}
+        style={Drop}
+        source={dropLogo}
+        width={71}
+        height={98}
+      />
+      <Text style={RegisterText}>Zarejestruj się</Text>
+      <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "username")}
+        style={[Input, StandardText]}
+        placeholder="Nazwa użytkownika"
+      />
+      <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "email")}
+        style={[Input, StandardText]}
+        placeholder="E-mail adres"
+      />
+      <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "password")}
+        style={[Input, StandardText]}
+        placeholder="Hasło"
+        secureTextEntry={true}
+      />
+      <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "repeatPassword")}
+        style={[Input, StandardText]}
+        placeholder="Potwierdź hasło"
+        secureTextEntry={true}
+      />
+      <TextInput
+        onChangeText={updateInputValueHandler.bind(this, "source")}
+        style={[Input, StandardText]}
+        placeholder="Źródło danych"
+        secureTextEntry={true}
+      />
+      <Picker
+        style={PickerStyle}
+        itemStyle={{ height: 50 }}
+        selectedValue={role}
+        onValueChange={updateInputValueHandler.bind(this, "role")}
+      >
+        <Picker.Item label="Klient" value="customer" />
+        <Picker.Item label="Analityk" value="analyst" />
+      </Picker>
+      <TouchableOpacity
+        disabled={locationPermission}
+        style={RegisterButton}
+        onPress={signupHandler}
+      >
+        <Text style={ButtonText}>{"Register"}</Text>
+      </TouchableOpacity>
+      <FlashMessage position="bottom" />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    textAlign: "center",
   },
   Drop: {
-    width: 71,
-    height: 98,
     marginBottom: 13,
   },
   RegisterText: {
@@ -218,11 +218,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "90%",
     marginTop: 22,
+    marginBottom: 30,
   },
   ButtonText: {
     color: "white",
     fontWeight: "700",
     fontSize: 24,
+    padding: 10,
   },
   PickerStyle: {
     width: "90%",
