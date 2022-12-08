@@ -71,6 +71,8 @@ function AuthenticatedStack() {
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Profil użytkownika" component={UserProfile} />
       <Drawer.Screen name="Statystyki" component={Statistics} />
+      <Drawer.Screen name="Information" component={Information} />
+      <Drawer.Screen name="Analitics" component={Analitics} />
       <Drawer.Screen name="Wyloguj" component={Logout} />
     </Drawer.Navigator>
   );
