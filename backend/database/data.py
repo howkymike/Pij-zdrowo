@@ -124,10 +124,10 @@ class Data:
 
         # locations
         location = []
-        for one in data:
+        data_location = list(db_data.measurement.find({"location": {"$exists": True}}))
+        for one in data_location:
             location.append(one["location"])
         location = unique_list(location)
-
         # abnormal data
         access_policy_data = access_policy_object.filter_access(data, request.headers.get("Auth"))
         abnormal_data = detect_abnormal_all(data)
@@ -163,7 +163,6 @@ class Data:
         
         average_ph = round(average_ph / len(unique_sources), 2)
         average_tds = round(average_tds / len(unique_sources), 2)
-
         return jsonify({
             "unique_sources_count": unique_sources_count, 
             "unique_location":location, 

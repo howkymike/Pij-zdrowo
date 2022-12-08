@@ -4,8 +4,8 @@ import asyncio
 # The main function that will handle connection and communication 
 # with the server
 async def listen():
-    #url = "ws://127.0.0.1:7000"
-    url = "ws://3.125.155.58:7000"
+    url = "ws://127.0.0.1:7000"
+    #url = "ws://3.125.155.58:7000"
     # Connect to the server
     async with websockets.connect(url) as ws:
         # Send a greeting message

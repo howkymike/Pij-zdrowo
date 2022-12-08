@@ -65,5 +65,6 @@ def get_abnormal_data():
     return Data().get_data_abnormal()
 
 @app.route("/data/statistics")
+@token_needed
 def get_statistics():
     return Data().get_data_statistics()
