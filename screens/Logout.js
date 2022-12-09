@@ -1,14 +1,13 @@
 import { useEffect, useContext } from "react";
+import { View } from "react-native";
 
 import { AuthContext } from "../store/auth-context";
 
 export default async function Logout({ navigation }) {
+  const authCtx = useContext(AuthContext);
   useEffect(() => {
-    const authCtx = useContext(AuthContext);
-    authCtx.logout(() => {
-      navigation.navigate("Login");
-    });
+    authCtx.logout(navigation);
   });
 
-  return <></>;
+  return <View></View>;
 }

@@ -14,12 +14,13 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import { AuthContext } from "../store/auth-context";
 import { createUser } from "../util/auth";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function Register() {
+  const authCtx = useContext(AuthContext);
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
   async function verifyPermissions() {
@@ -84,7 +85,8 @@ export default function Register() {
       password,
       location,
       role,
-      source
+      source,
+      authCtx.URL
     );
     if (res) {
       navigation.navigate("Login");

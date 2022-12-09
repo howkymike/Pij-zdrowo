@@ -13,13 +13,8 @@ import Login from "./screens/Login";
 import Register from "./screens/Register.js";
 import Information from "./screens/Information.js";
 import Analitics from "./screens/Analitics.js";
-import Home from "./screens/Home.js";
-import UserProfile from "./screens/UserProfile.js";
-import Logout from "./screens/Logout.js";
 import Statistics from "./screens/Statistics";
 import AuthContextProvider, { AuthContext } from "./store/auth-context.js";
-import URLContextProvider from "./store/url-context.js";
-
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
@@ -34,9 +29,9 @@ function CustomDrawerContent(props) {
       </DrawerContentScrollView>
       <View>
         <DrawerItem
-          label={() => <Text style={{ color: "white" }}>Logout</Text>}
+          label={() => <Text style={{ color: "white" }}>Wyloguj się</Text>}
           style={{ backgroundColor: "cornflowerblue" }}
-          onPress={() => alert("Logged out!")}
+          onPress={() => authCtx.logout(props.navigation)}
         />
       </View>
     </SafeAreaView>
@@ -47,11 +42,9 @@ export default function App() {
   return (
     <>
       <StatusBar />
-      <URLContextProvider>
-        <AuthContextProvider>
-          <Navigation />
-        </AuthContextProvider>
-      </URLContextProvider>
+      <AuthContextProvider>
+        <Navigation />
+      </AuthContextProvider>
     </>
   );
 }
@@ -60,20 +53,21 @@ function AuthStack() {
   return (
     <Drawer.Navigator initialRouteName="Login" drawerPosition="right">
       <Drawer.Screen name="Zaloguj się" component={Login} />
-      <Drawer.Screen name="Register" component={Register} />
+      <Drawer.Screen name="Zarejestruj się" component={Register} />
     </Drawer.Navigator>
   );
 }
 
 function AuthenticatedStack() {
   return (
-    <Drawer.Navigator initialRouteName="Login" drawerPosition="right">
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Profil użytkownika" component={UserProfile} />
+    <Drawer.Navigator
+      initialRouteName="Login"
+      drawerPosition="right"
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen name="Statystyki" component={Statistics} />
       <Drawer.Screen name="Information" component={Information} />
       <Drawer.Screen name="Analitics" component={Analitics} />
-      <Drawer.Screen name="Wyloguj" component={Logout} />
     </Drawer.Navigator>
   );
 }
@@ -85,6 +79,7 @@ function Navigation() {
     <NavigationContainer>
       {!authCtx.isAuthenticated && <AuthStack />}
       {authCtx.isAuthenticated && <AuthenticatedStack />}
+      {}
     </NavigationContainer>
   );
 }

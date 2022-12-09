@@ -1,9 +1,10 @@
 import axios from "axios";
 import qs from "qs";
-import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
-import {useEffect} from "react";
-
-const URL = "http://3.125.155.58";
+import FlashMessage, {
+  showMessage,
+  hideMessage,
+} from "react-native-flash-message";
+import { useEffect } from "react";
 
 export const createUser = async (
   username,
@@ -11,7 +12,8 @@ export const createUser = async (
   password,
   location,
   role,
-  source
+  source,
+  URL
 ) => {
   console.log(username, email, password);
   const data = {
@@ -30,7 +32,7 @@ export const createUser = async (
   };
   try {
     const response = await axios(options);
-    if(response.data && response.data.success) {
+    if (response.data && response.data.success) {
       console.log(response.data);
       return true;
     }
@@ -40,7 +42,7 @@ export const createUser = async (
   return false;
 };
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (email, password, URL) => {
   console.log(email, password);
   const data = {
     email,

@@ -26,7 +26,7 @@ export default function Login({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   function pressHandler() {
-    navigation.navigate("Register");
+    navigation.navigate("Zarejestruj się");
   }
 
   const {
@@ -46,10 +46,11 @@ export default function Login({ navigation }) {
 
   async function loginHandler() {
     setIsLogging(true);
-    const { token, source } = await loginUser(email, password);
+    const { token, source } = await loginUser(email, password, authCtx.URL);
     if (token) authCtx.authenticate(token);
     if (source) authCtx.sourceHandler(source);
     setIsLogging(false);
+    navigation.navigate("Statystyki");
   }
 
   function updateInputValueHandler(inputType, enteredValue) {
