@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "WaterApp",
-    "slug": "WaterApp",
+    "name": "PijZdrowo",
+    "slug": "PijZdrowo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/blur.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,13 +21,20 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.bklinowski.PijZdrowo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a0496343-9b3c-4cf7-b4e8-7eb0fa9eb2b5"
+      }
     }
   }
 }
