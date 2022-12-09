@@ -128,22 +128,22 @@ export default function Analitics() {
         <Text style={InformationText}>Ogólne informacje</Text>
       </View>
       <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
-        <Text style={NestedText}>Ilość urządzeń:{UniqueDevices}</Text>
+        <Text style={NestedText}>Liczba urządzeń: {UniqueDevices}</Text>
       </View>
       <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
-        <Text style={NestedText}>średnia parametrów wody</Text>
+        <Text style={NestedText}>Średnia parametrów wody</Text>
       </View>
       <View style={ViewText}><Text style={DoubleNestedBullet}>{'\u25EF'}</Text>
-        <Text style={DoubleNestedText}>PH:{AveragePH}</Text>
+        <Text style={DoubleNestedText}>PH: {AveragePH}</Text>
       </View>
       <View style={ViewText}><Text style={DoubleNestedBullet}>{'\u25EF'}</Text>
-        <Text style={DoubleNestedText}>TDS:{AverageTDS}</Text>
+        <Text style={DoubleNestedText}>TDS: {AverageTDS}</Text>
       </View>
       <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
-        <Text style={NestedText}>Najlepszy stan wody odczytano w:{BestWater}</Text>
+        <Text style={NestedText}>Najlepszy stan wody odczytano w: {BestWater}</Text>
       </View>
       <View style={ViewText}><Text style={NestedBullet}>{'\u25EF'}</Text>
-        <Text style={NestedText}>Najgorszy stan wody odczytano w:{WorstWater}</Text>
+        <Text style={NestedText}>Najgorszy stan wody odczytano w: {WorstWater}</Text>
       </View>
     </View> 
     {myloop}
